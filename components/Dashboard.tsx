@@ -1,10 +1,10 @@
-
-import React, { useState, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { User, TimeLog } from '../types';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import TimeTracker from './TimeTracker';
 import History from './History';
 import { LogoutIcon } from './icons';
+import AdminDashboard from './AdminDashboard';
 
 interface DashboardProps {
   user: User;
@@ -41,8 +41,13 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 max-w-7xl">
         <header className="flex justify-between items-center mb-8">
             <div>
-                <h1 className="text-3xl sm:text-4xl font-bold text-white">Hola, {user.username}</h1>
-                <p className="text-gray-400">Bienvenido a tu registro de horarios.</p>
+                <h1 className="text-3xl sm:text-4xl font-bold text-white">
+                    Hola, {user.username}
+                    <span className="text-lg font-normal text-indigo-400 capitalize ml-2">({user.role === 'boss' ? 'Jefe' : 'Trabajador'})</span>
+                </h1>
+                <p className="text-gray-400">
+                    {user.role === 'boss' ? 'Supervisa los registros de tu equipo.' : 'Bienvenido a tu registro de horarios.'}
+                </p>
             </div>
             <button 
                 onClick={onLogout}
@@ -53,18 +58,24 @@ const Dashboard: React.FC<DashboardProps> = ({ user, onLogout }) => {
             </button>
         </header>
 
-        <main className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
-                <TimeTracker
-                    isClockedIn={isClockedIn}
-                    onClockIn={handleClockIn}
-                    onClockOut={handleClockOut}
-                    lastClockInTime={activeLog?.clockIn}
-                />
-            </div>
-            <div className="lg:col-span-2">
-                <History timeLogs={timeLogs} />
-            </div>
+        <main>
+            {user.role === 'worker' ? (
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-1">
+                        <TimeTracker
+                            isClockedIn={isClockedIn}
+                            onClockIn={handleClockIn}
+                            onClockOut={handleClockOut}
+                            lastClockInTime={activeLog?.clockIn}
+                        />
+                    </div>
+                    <div className="lg:col-span-2">
+                        <History timeLogs={timeLogs} />
+                    </div>
+                </div>
+            ) : (
+                <AdminDashboard currentUser={user} />
+            )}
         </main>
     </div>
   );

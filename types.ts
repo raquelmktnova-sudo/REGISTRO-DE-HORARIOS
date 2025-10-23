@@ -1,6 +1,6 @@
-
 export interface User {
   username: string;
+  role: 'boss' | 'worker';
 }
 
 export interface TimeLog {

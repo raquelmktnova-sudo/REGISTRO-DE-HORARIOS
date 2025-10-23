@@ -1,0 +1,5 @@
+{
+  "name": "Registro de Horarios Pro",
+  "description": "Una aplicación moderna e intuitiva para el seguimiento de las horas de trabajo. Los usuarios pueden registrarse, fichar la entrada y la salida, dejar notas para cada registro y ver un historial detallado de sus jornadas laborales con el total de horas calculadas.",
+  "requestFramePermissions": []
+}
